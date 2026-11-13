@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Environment Variables & Secrets (CRITICAL: NEVER COMMIT)
+.env
+.env.*
+!.env.example
+*.local
+
+# Production Build outputs
+dist/
+build/
+
+# Logs & Runtime
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.log
+
+# Editor & OS files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+
+# Old WordPress backup folder (do not commit to MERN git repo)
+waytoonerd.com/
+_runtime/
+*.sql
+*.zip
+*.tar.gz
+
+# Local upload cache (assets are in Backblaze B2)
+server/public/uploads/*
+!server/public/uploads/.gitkeep
+
