@@ -16,6 +16,7 @@ import StaticPage from './pages/StaticPage';
 
 import AdminLogin from './admin/AdminLogin';
 import Dashboard from './admin/Dashboard';
+import ScrollToTop from './components/common/ScrollToTop';
 
 const MainLayout = ({ children }) => {
   const { settings, categories, recentPosts } = useContext(SiteContext);
@@ -36,6 +37,7 @@ function App() {
       <AuthProvider>
         <SiteProvider>
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               {/* Admin Routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
