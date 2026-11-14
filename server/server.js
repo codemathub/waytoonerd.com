@@ -6,17 +6,17 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, '.env') });
+
 import authRoutes from './routes/authRoutes.js';
 import postRoutes from './routes/postRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import pageRoutes from './routes/pageRoutes.js';
 import commonRoutes from './routes/commonRoutes.js';
+import successStoryRoutes from './routes/successStoryRoutes.js';
 import { getFileStreamFromB2 } from './services/b2Service.js';
-
-dotenv.config();
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -35,11 +35,15 @@ app.get('/uploads/*', async (req, res) => {
     if (s3Response.ContentType) {
       res.setHeader('Content-Type', s3Response.ContentType);
     }
+    if (s3Response.ContentLength) {
+      res.setHeader('Content-Length', s3Response.ContentLength);
+    }
+    res.setHeader('Accept-Ranges', 'bytes');
     res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     s3Response.Body.pipe(res);
   } catch (err) {
     console.error(`B2 Stream Error for [${fileSubPath}]:`, err.message);
-    res.status(404).send('Image not found');
+    res.status(404).send('Media not found');
   }
 });
 
@@ -48,6 +52,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/pages', pageRoutes);
+app.use('/api/success-stories', successStoryRoutes);
 app.use('/api', commonRoutes);
 
 // Health check
@@ -66,4 +71,3 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/waytooner
   .catch((err) => {
     console.error('MongoDB connection error:', err);
   });
-

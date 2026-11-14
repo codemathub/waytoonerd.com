@@ -17,6 +17,7 @@ import StaticPage from './pages/StaticPage';
 import AdminLogin from './admin/AdminLogin';
 import Dashboard from './admin/Dashboard';
 import ScrollToTop from './components/common/ScrollToTop';
+import SuccessStoriesPage from './pages/SuccessStoriesPage';
 
 const MainLayout = ({ children }) => {
   const { settings, categories, recentPosts } = useContext(SiteContext);
@@ -45,6 +46,7 @@ function App() {
 
               {/* Public Website Routes */}
               <Route path="/" element={<MainLayout><HomePage /></MainLayout>} />
+              <Route path="/success-stories" element={<MainLayout><SuccessStoriesPage /></MainLayout>} />
               <Route path="/category/:slug" element={<MainLayout><CategoryPage /></MainLayout>} />
               <Route path="/contact-us" element={<MainLayout><ContactPage /></MainLayout>} />
               <Route path="/about-us" element={<MainLayout><StaticPage defaultSlug="about-us" /></MainLayout>} />

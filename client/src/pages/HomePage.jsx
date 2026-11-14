@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import api, { getImageUrl } from '../api/client';
 import HeroBannerGrid from '../components/home/HeroBannerGrid';
 import Sidebar from '../components/layout/Sidebar';
+import HomeSuccessStories from '../components/home/HomeSuccessStories';
 
 const HomePage = () => {
   const [posts, setPosts] = useState([]);
@@ -204,6 +205,9 @@ const HomePage = () => {
           <Sidebar categories={categories} recentPosts={recentPosts} />
         </div>
       </div>
+
+      {/* Featured Video Success Stories Section right above footer */}
+      <HomeSuccessStories />
     </div>
   );
 };

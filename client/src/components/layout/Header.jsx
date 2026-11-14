@@ -15,12 +15,18 @@ const Header = ({ settings, categories }) => {
     }
   };
 
-  const mainMenu = (settings?.menus?.main && settings.menus.main.length > 0)
+  const rawMenu = (settings?.menus?.main && settings.menus.main.length > 0)
     ? settings.menus.main
     : categories.map(c => ({
         label: c.name,
         path: `/category/${c.slug}`
       }));
+
+  // Ensure "Success Story" is included in main navbar
+  const mainMenu = [...rawMenu];
+  if (!mainMenu.some(item => item.path === '/success-stories')) {
+    mainMenu.push({ label: 'Success Story', path: '/success-stories' });
+  }
 
   const topMenu = [
     { label: 'Privacy Policy', path: '/privacy-policy' },
