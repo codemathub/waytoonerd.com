@@ -6,6 +6,7 @@ import Post from '../models/Post.js';
 import Category from '../models/Category.js';
 import { authenticateToken, requireAdmin } from '../middleware/auth.js';
 import { upload } from '../middleware/upload.js';
+import { uploadToB2 } from '../services/b2Service.js';
 
 const router = express.Router();
 
@@ -93,11 +94,16 @@ router.get('/subscribers', authenticateToken, requireAdmin, async (req, res) => 
   }
 });
 
-// Admin: Upload Media
-router.post('/media/upload', authenticateToken, requireAdmin, upload.single('file'), (req, res) => {
+// Admin: Upload Media (Images & Videos) directly to Backblaze B2
+router.post('/media/upload', authenticateToken, requireAdmin, upload.single('file'), async (req, res) => {
   if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
-  const relativePath = req.file.path.split('public')[1].replace(/\\/g, '/');
-  res.json({ url: relativePath, filename: req.file.filename });
+  try {
+    const result = await uploadToB2(req.file.buffer, req.file.originalname, req.file.mimetype);
+    res.json({ url: result.url, filename: req.file.originalname });
+  } catch (err) {
+    console.error('B2 Upload Error:', err);
+    res.status(500).json({ message: 'Failed to upload media to storage' });
+  }
 });
 
 // Admin: Dashboard Overview Stats
