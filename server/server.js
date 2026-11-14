@@ -28,7 +28,7 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
 
 // 2. High-speed Fallback: Stream directly from Backblaze B2 bucket (calthx/waytoonerd/...)
-app.get('/uploads/*', async (req, res, next) => {
+app.get('/uploads/*', async (req, res) => {
   const fileSubPath = req.params[0];
   try {
     const s3Response = await getFileStreamFromB2(fileSubPath);
@@ -38,6 +38,7 @@ app.get('/uploads/*', async (req, res, next) => {
     res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     s3Response.Body.pipe(res);
   } catch (err) {
+    console.error(`B2 Stream Error for [${fileSubPath}]:`, err.message);
     res.status(404).send('Image not found');
   }
 });
