@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import api, { getImageUrl, B2_PUBLIC_URL } from '../api/client';
+import api, { getImageUrl } from '../api/client';
 import Sidebar from '../components/layout/Sidebar';
 
 const PostDetailPage = () => {
@@ -37,10 +37,8 @@ const PostDetailPage = () => {
   if (loading) return <div className="text-center py-20 text-gray-500">Loading Article...</div>;
   if (!post) return <div className="text-center py-20 text-red-500">Article not found.</div>;
 
-  // Dynamically prefix any relative /uploads/ in content with the high-speed B2 public CDN
-  const parsedContent = post.content
-    ? post.content.replace(/src="\/uploads\//g, `src="${B2_PUBLIC_URL}/`)
-    : '';
+  // Content HTML uses clean relative /uploads/ paths which seamlessly resolve via backend stream
+  const parsedContent = post.content || '';
 
   return (
     <div className="max-w-[98%] mx-auto px-4 py-8">

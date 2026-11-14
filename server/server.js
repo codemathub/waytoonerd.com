@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 import authRoutes from './routes/authRoutes.js';
@@ -10,6 +11,7 @@ import postRoutes from './routes/postRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import pageRoutes from './routes/pageRoutes.js';
 import commonRoutes from './routes/commonRoutes.js';
+import { getFileStreamFromB2 } from './services/b2Service.js';
 
 dotenv.config();
 
@@ -22,8 +24,23 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Serve static media files (3,753 files from WordPress uploads)
+// 1. Serve static media files from local disk if present
 app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
+
+// 2. High-speed Fallback: Stream directly from Backblaze B2 bucket (calthx/waytoonerd/...)
+app.get('/uploads/*', async (req, res, next) => {
+  const fileSubPath = req.params[0];
+  try {
+    const s3Response = await getFileStreamFromB2(fileSubPath);
+    if (s3Response.ContentType) {
+      res.setHeader('Content-Type', s3Response.ContentType);
+    }
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    s3Response.Body.pipe(res);
+  } catch (err) {
+    res.status(404).send('Image not found');
+  }
+});
 
 // Routes
 app.use('/api/auth', authRoutes);

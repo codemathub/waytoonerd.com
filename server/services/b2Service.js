@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -12,19 +12,14 @@ const s3Client = new S3Client({
 });
 
 const BUCKET = process.env.B2_BUCKET_NAME || 'calthx';
-const B2_PUBLIC_URL = process.env.B2_PUBLIC_URL || 'https://calthx.s3.us-east-005.backblazeb2.com';
 const FOLDER = process.env.B2_FOLDER || 'waytoonerd';
 
 /**
  * Upload a single file buffer to Backblaze B2 under the waytoonerd folder
- * @param {Buffer} buffer - File buffer
- * @param {string} originalname - Original file name
- * @param {string} mimetype - Content MIME type
- * @returns {Promise<{ url: string, key: string }>}
  */
 export async function uploadToB2(buffer, originalname, mimetype) {
   const sanitizedName = originalname.replace(/[^a-zA-Z0-9.-]/g, '_');
-  const datePrefix = new Date().toISOString().slice(0, 7).replace('-', '/'); // "2026/11"
+  const datePrefix = new Date().toISOString().slice(0, 7).replace('-', '/');
   const key = `${FOLDER}/${datePrefix}/${Date.now()}-${sanitizedName}`;
 
   const command = new PutObjectCommand({
@@ -36,9 +31,22 @@ export async function uploadToB2(buffer, originalname, mimetype) {
 
   await s3Client.send(command);
 
-  const publicUrl = `${B2_PUBLIC_URL}/${key}`;
-  return { url: publicUrl, key };
+  // Return the relative proxy path so images load securely through https://waytoonerd.com/uploads/...
+  const relativeUrl = `/uploads/${datePrefix}/${Date.now()}-${sanitizedName}`;
+  return { url: relativeUrl, key };
 }
 
-export default { uploadToB2, s3Client };
+/**
+ * Get readable stream of a file from Backblaze B2
+ */
+export async function getFileStreamFromB2(key) {
+  const fullKey = key.startsWith(`${FOLDER}/`) ? key : `${FOLDER}/${key}`;
+  const command = new GetObjectCommand({
+    Bucket: BUCKET,
+    Key: fullKey
+  });
+  return await s3Client.send(command);
+}
+
+export default { uploadToB2, getFileStreamFromB2, s3Client };
 
