@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
+import { getImageUrl } from '../../api/client';
 
 const Header = ({ settings, categories }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -34,7 +35,7 @@ const Header = ({ settings, categories }) => {
         {/* Official Brand Logo */}
         <Link to="/" className="flex items-center space-x-2 shrink-0">
           <img
-            src="http://localhost:5001/uploads/2019/05/footer-logo.png"
+            src={getImageUrl('/uploads/2019/05/footer-logo.png')}
             alt="WayTooNerd"
             className="h-11 md:h-12 w-auto object-contain"
           />
@@ -59,32 +60,32 @@ const Header = ({ settings, categories }) => {
           <div className="hidden sm:flex items-center space-x-3 text-gray-700">
             {settings?.socialLinks?.facebook && (
               <a href={settings.socialLinks.facebook} target="_blank" rel="noopener noreferrer" title="Facebook" className="hover:opacity-80 transition">
-                <img src="http://localhost:5001/uploads/2019/05/facebook.png" alt="Facebook" className="header-social-icon w-4 h-4 object-contain" />
+                <img src={getImageUrl('/uploads/2019/05/facebook.png')} alt="Facebook" className="header-social-icon w-4 h-4 object-contain" />
               </a>
             )}
             {settings?.socialLinks?.linkedin && (
               <a href={settings.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn" className="hover:opacity-80 transition">
-                <img src="http://localhost:5001/uploads/2019/07/link.png" alt="LinkedIn" className="header-social-icon w-4 h-4 object-contain" />
+                <img src={getImageUrl('/uploads/2019/07/link.png')} alt="LinkedIn" className="header-social-icon w-4 h-4 object-contain" />
               </a>
             )}
             {settings?.socialLinks?.instagram && (
               <a href={settings.socialLinks.instagram} target="_blank" rel="noopener noreferrer" title="Instagram" className="hover:opacity-80 transition">
-                <img src="http://localhost:5001/uploads/2019/05/instagram.png" alt="Instagram" className="header-social-icon w-4 h-4 object-contain" />
+                <img src={getImageUrl('/uploads/2019/05/instagram.png')} alt="Instagram" className="header-social-icon w-4 h-4 object-contain" />
               </a>
             )}
             {settings?.socialLinks?.twitter && (
               <a href={settings.socialLinks.twitter} target="_blank" rel="noopener noreferrer" title="Twitter" className="hover:opacity-80 transition">
-                <img src="http://localhost:5001/uploads/2019/05/twitter.png" alt="Twitter" className="header-social-icon w-4 h-4 object-contain" />
+                <img src={getImageUrl('/uploads/2019/05/twitter.png')} alt="Twitter" className="header-social-icon w-4 h-4 object-contain" />
               </a>
             )}
             {settings?.socialLinks?.youtube && (
               <a href={settings.socialLinks.youtube} target="_blank" rel="noopener noreferrer" title="YouTube" className="hover:opacity-80 transition">
-                <img src="http://localhost:5001/uploads/2019/05/utube.png" alt="YouTube" className="header-social-icon w-4 h-4 object-contain" />
+                <img src={getImageUrl('/uploads/2019/05/utube.png')} alt="YouTube" className="header-social-icon w-4 h-4 object-contain" />
               </a>
             )}
             {settings?.socialLinks?.pinterest && (
               <a href={settings.socialLinks.pinterest} target="_blank" rel="noopener noreferrer" title="Pinterest" className="hover:opacity-80 transition">
-                <img src="http://localhost:5001/uploads/2019/05/pin.png" alt="Pinterest" className="header-social-icon w-4 h-4 object-contain" />
+                <img src={getImageUrl('/uploads/2019/05/pin.png')} alt="Pinterest" className="header-social-icon w-4 h-4 object-contain" />
               </a>
             )}
           </div>

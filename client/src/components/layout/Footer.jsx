@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../../api/client';
+import api, { getImageUrl } from '../../api/client';
 
 const Footer = ({ settings, categories, recentPosts }) => {
   const [email, setEmail] = useState('');
@@ -39,7 +39,7 @@ const Footer = ({ settings, categories, recentPosts }) => {
                 title="Facebook"
                 className="inline-block p-3 hover:bg-[#fc4f00] transition duration-500 rounded transform hover:scale-110 hover:rotate-[360deg]"
               >
-                <img src="http://localhost:5001/uploads/2019/05/facebook.png" alt="facebook" className="h-6 w-auto" />
+                <img src={getImageUrl('/uploads/2019/05/facebook.png')} alt="facebook" className="h-6 w-auto" />
               </a>
             </li>
             <li>
@@ -50,7 +50,7 @@ const Footer = ({ settings, categories, recentPosts }) => {
                 title="LinkedIn"
                 className="inline-block p-3 hover:bg-[#fc4f00] transition duration-500 rounded transform hover:scale-110 hover:rotate-[360deg]"
               >
-                <img src="http://localhost:5001/uploads/2019/07/link.png" alt="Linkedin" className="h-6 w-auto" />
+                <img src={getImageUrl('/uploads/2019/07/link.png')} alt="Linkedin" className="h-6 w-auto" />
               </a>
             </li>
             <li>
@@ -61,7 +61,7 @@ const Footer = ({ settings, categories, recentPosts }) => {
                 title="Instagram"
                 className="inline-block p-3 hover:bg-[#fc4f00] transition duration-500 rounded transform hover:scale-110 hover:rotate-[360deg]"
               >
-                <img src="http://localhost:5001/uploads/2019/05/instagram.png" alt="instagram" className="h-6 w-auto" />
+                <img src={getImageUrl('/uploads/2019/05/instagram.png')} alt="instagram" className="h-6 w-auto" />
               </a>
             </li>
             <li>
@@ -72,7 +72,7 @@ const Footer = ({ settings, categories, recentPosts }) => {
                 title="Twitter"
                 className="inline-block p-3 hover:bg-[#fc4f00] transition duration-500 rounded transform hover:scale-110 hover:rotate-[360deg]"
               >
-                <img src="http://localhost:5001/uploads/2019/05/twitter.png" alt="twitter" className="h-6 w-auto" />
+                <img src={getImageUrl('/uploads/2019/05/twitter.png')} alt="twitter" className="h-6 w-auto" />
               </a>
             </li>
             <li>
@@ -83,7 +83,7 @@ const Footer = ({ settings, categories, recentPosts }) => {
                 title="YouTube"
                 className="inline-block p-3 hover:bg-[#fc4f00] transition duration-500 rounded transform hover:scale-110 hover:rotate-[360deg]"
               >
-                <img src="http://localhost:5001/uploads/2019/05/utube.png" alt="youtube" className="h-6 w-auto" />
+                <img src={getImageUrl('/uploads/2019/05/utube.png')} alt="youtube" className="h-6 w-auto" />
               </a>
             </li>
             <li>
@@ -94,7 +94,7 @@ const Footer = ({ settings, categories, recentPosts }) => {
                 title="Pinterest"
                 className="inline-block p-3 hover:bg-[#fc4f00] transition duration-500 rounded transform hover:scale-110 hover:rotate-[360deg]"
               >
-                <img src="http://localhost:5001/uploads/2019/05/pin.png" alt="pinterest" className="h-6 w-auto" />
+                <img src={getImageUrl('/uploads/2019/05/pin.png')} alt="pinterest" className="h-6 w-auto" />
               </a>
             </li>
           </ul>
@@ -113,7 +113,7 @@ const Footer = ({ settings, categories, recentPosts }) => {
               Through WayTooNerd, we intend to make our readers mindful of any latest tech news concerning Android, iOS, MacOS or Windows OS. We are determined to resolve any sort of technical issues via this platform.
             </p>
             <img
-              src="http://localhost:5001/uploads/2019/05/footer-logo.png"
+              src={getImageUrl('/uploads/2019/05/footer-logo.png')}
               alt="waytoonerd"
               className="w-[200px] h-auto object-contain mt-2"
             />
@@ -143,7 +143,7 @@ const Footer = ({ settings, categories, recentPosts }) => {
                 <li key={idx} className="flex space-x-3 items-center border-b border-[#333] pb-2">
                   {p.featuredImage?.url && (
                     <img
-                      src={`http://localhost:5001${p.featuredImage.url}`}
+                      src={getImageUrl(p.featuredImage.url)}
                       alt={p.title}
                       className="w-12 h-12 object-cover rounded shrink-0"
                     />
